@@ -19,10 +19,10 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr gmodels \
                epiDisplay lubridate tidyverse knitr gtsummary tidyr tinytex \
                googleCloudStorageR data.table reshape listr ggplot2 ggpubr \
                RColorBrewer stringr plyr rmarkdown janitor finalfit expss \
-               summarytools magrittr arsenal patchwork rio sqldf
+               magrittr arsenal patchwork rio sqldf 
 
 # These libraries might not be available from install2.R so use CRAN
-RUN R -e "install.packages(c('gt', 'kableExtra','vtable'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+RUN R -e "install.packages(c('gt', 'kableExtra','vtable', 'summarytools', 'magick', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 # Copy R code to directory in instance
 COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
