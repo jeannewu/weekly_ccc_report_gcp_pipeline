@@ -16,8 +16,8 @@ library(tools)
 function(){return("alive")}
 
 #* Runs report
-#* @get /ccc_weekly_report_api
-#* @post /ccc_weekly_report_api
+#* @get /ccc-weekly-report-api
+#* @post /ccc-weekly-report-api
 function(){
     
     # Define parameters 
