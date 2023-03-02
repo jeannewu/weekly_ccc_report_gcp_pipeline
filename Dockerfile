@@ -15,8 +15,7 @@ RUN apt-get update \
 RUN Rscript -e 'tinytex::install_tinytex()'
 
 # Install R libraries
-RUN install2.r --error /
-               plumber gridExtra scales boxr bigrquery dplyr gmodels \
+RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr gmodels \
                epiDisplay lubridate tidyverse knitr gtsummary tidyr tinytex \
                googleCloudStorageR data.table reshape listr ggplot2 ggpubr \
                RColorBrewer stringr plyr rmarkdown janitor finalfit expss \
