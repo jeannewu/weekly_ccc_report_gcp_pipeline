@@ -29,4 +29,4 @@ COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
 COPY ["./ccc_weekly_metrics.Rmd", "./ccc_weekly_metrics.Rmd"]
 
 # Run R code
-ENTRYPOINT ["R", "-e","pr <- plumber::plumb('ccc_metrics_metrics_api.R'); pr$run(host='0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]
+ENTRYPOINT ["R", "-e","pr <- plumber::plumb('ccc_weekly_metrics_api.R'); pr$run(host='0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]
