@@ -48,6 +48,10 @@ function(){
     token <- token_fetch(scopes=scope)
     gcs_auth(token=token)
     gcs_upload(report_fid, bucket=bucket, name=report_fid) 
+    
+    # Loop through CSV files and write them to GCP Cloud Storage
+    filelist = list.files(pattern="*.csv$")
+    lapply(filelist, function(x) gcs_upload(x, name = x))
 
     #TODO write report_fid to Box using boxr::box_auth_service()
     
