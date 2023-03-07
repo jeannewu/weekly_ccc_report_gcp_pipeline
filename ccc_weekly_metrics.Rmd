@@ -34,10 +34,10 @@ library(tidyverse) ###for data management https://tidyselect.r-lib.org/reference
 library(dplyr) ###data management
 library(reshape)  ###to work on transition from long to wide or wide to long data
 library(listr) ###to work on a list of vector, files or..
-library(sqldf) ##sql
+# library(sqldf) ##sql
 library(lubridate) ###date time
 library(ggplot2) ###plots
-library(ggpubr) ###for the publications of plots
+# library(ggpubr) ###for the publications of plots
 library(RColorBrewer) ###visions color http://www.sthda.com/english/wiki/colors-in-r
 library(gridExtra)
 library(stringr) ###to work on patterns, charaters
@@ -46,16 +46,17 @@ library(tidyr)
 library(tinytex) #for pdf
 library(rmarkdown) ###for the output tables into other files: pdf, rtf, etc.
 library(janitor) #to get the summary sum
-library(finalfit) #https://cran.r-project.org/web/packages/finalfit/vignettes/export.html t
+# library(finalfit) #https://cran.r-project.org/web/packages/finalfit/vignettes/export.html t
 library(expss) ###to add labels
 library(epiDisplay) ##recommended applied here crosstable, tab1
-library(summarytools) ##recommended
-library(gmodels) ##recommended
+#library(summarytools) ##recommended
+library(RCurl)
+# library(gmodels) ##recommended
 library(magrittr)
 library(arsenal)
 library(gtsummary)
 library(kableExtra)
-library(patchwork)
+# library(patchwork)
 library(rio)
 options(knitr.table.format = "latex")
 currentDate <- Sys.Date()
@@ -2422,6 +2423,9 @@ refwd.cases.notes <- tmp[,which(grepl("v1r0", colnames(tmp)) | colnames(tmp) %in
      box_write(object = incentive_nonchi[,c("token","site","NORC.Payment.Eligibility","Eligible.for.Payment","Time.Payment.Eligible.for.Round")], file_name =paste("Incentives_Weekly_Report_OTHERSITES_",currentDate,".csv",sep=""))
    }
 
-
+   write_to_cloud_storage <- TRUE
+   if (write_to_box){
+     TODO
+   }
 
 ```

@@ -15,14 +15,13 @@ RUN apt-get update \
 RUN Rscript -e 'tinytex::install_tinytex()'
 
 # Install R libraries
-RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr gmodels \
+RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
                epiDisplay lubridate tidyverse knitr gtsummary tidyr tinytex \
-               googleCloudStorageR data.table reshape listr ggplot2 ggpubr \
-               RColorBrewer stringr plyr rmarkdown janitor finalfit expss \
-               magrittr arsenal patchwork rio sqldf 
+               googleCloudStorageR data.table reshape listr ggplot2 \
+               RColorBrewer stringr plyr janitor expss magrittr arsenal rio RCurl
 
 # These libraries might not be available from install2.R so use CRAN
-RUN R -e "install.packages(c('gt', 'kableExtra','vtable', 'summarytools', 'magick', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+RUN R -e "install.packages(c('gt', 'kableExtra','vtable', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 # Copy R code to directory in instance
 COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
