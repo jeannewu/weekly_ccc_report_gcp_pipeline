@@ -14,7 +14,7 @@ steps:
  # Deploy container image to Cloud Run
  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
    entrypoint: gcloud
-   args: ['run','deploy','ccc-weekly-report-api', '--image=gcr.io/nih-nci-dceg-connect-prod-6d04/ccc-weekly-report-api:$COMMIT_SHA', '--region=us-central1', '--service-account=qa-qc-prod@nih-nci-dceg-connect-prod-6d04.iam.gserviceaccount.com']
+   args: ['run','deploy','ccc-weekly-report-api', '--image=gcr.io/nih-nci-dceg-connect-prod-6d04/ccc-weekly-report-api:$COMMIT_SHA', '--cpu=2','--memory=8192Mi', '--region=us-central1', '--service-account=qa-qc-prod@nih-nci-dceg-connect-prod-6d04.iam.gserviceaccount.com']
           
 images:
  - 'gcr.io/nih-nci-dceg-connect-prod-6d04/ccc-weekly-report-api:$COMMIT_SHA'
