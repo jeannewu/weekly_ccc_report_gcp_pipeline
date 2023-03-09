@@ -51,8 +51,8 @@ library(plyr)
 library(tidyr)
 library(kableExtra)
 library(tinytex) #for pdf
-tlmgr_install('threeparttablex')    # install the threeparttablex package
-tlmgr_update()               # update everything
+#tlmgr_install('threeparttablex')    # install the threeparttablex package
+#tlmgr_update()               # update everything
 # library(rmarkdown) ###for the output tables into other files: pdf, rtf, etc.
 library(janitor) #to get the summary sum
 library(finalfit) #https://cran.r-project.org/web/packages/finalfit/vignettes/export.html t
