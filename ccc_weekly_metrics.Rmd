@@ -12,7 +12,7 @@ output:
     fig_height: 6
     fig_caption: yes
     df_print: paged
-    latex_engine: xelatex
+    # latex_engine: xelatex
   html_document:
     toc: yes
     toc_depth: '2'
