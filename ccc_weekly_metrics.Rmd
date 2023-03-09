@@ -4,18 +4,24 @@ author: "JingWU"
 date: "`r format(Sys.Date(), '%d %B, %Y')`"
 output:
   pdf_document:
-    extra_dependencies:
-    - float
+    extra_dependencies: float
     toc: yes
     toc_depth: 2
     keep_tex: yes
     fig_width: 8
     fig_height: 6
     fig_caption: yes
-    latex_engine: xelatex
     df_print: paged
-
-header-includes: \usepackage[labelformat=empty]{caption}
+    latex_engine: xelatex
+  html_document:
+    toc: yes
+    toc_depth: '2'
+    df_print: paged
+header-includes:
+- \usepackage[labelformat=empty]{caption}
+- \usepackage{booktabs}
+- \usepackage{makecell}
+- \usepackage{pdflscape}
 ---
 
 This CCC weekly report contains tables and plots for the Connect Recruitment workflow including, demographics, incentives, survey and biospecimen completion and refusal and withdrawals for active and passive recruits and verified participants on `r format(Sys.Date(), '%d %B, %Y')`.
@@ -43,8 +49,11 @@ library(gridExtra)
 library(stringr) ###to work on patterns, charaters
 library(plyr)
 library(tidyr)
+library(kableExtra)
 library(tinytex) #for pdf
-library(rmarkdown) ###for the output tables into other files: pdf, rtf, etc.
+tlmgr_install('threeparttablex')    # install the threeparttablex package
+tlmgr_update()               # update everything
+# library(rmarkdown) ###for the output tables into other files: pdf, rtf, etc.
 library(janitor) #to get the summary sum
 library(finalfit) #https://cran.r-project.org/web/packages/finalfit/vignettes/export.html t
 library(expss) ###to add labels
@@ -55,7 +64,6 @@ library(gmodels) ##recommended
 library(magrittr)
 library(arsenal)
 library(gtsummary)
-library(kableExtra)
 library(patchwork)
 library(rio)
 options(knitr.table.format = "latex")

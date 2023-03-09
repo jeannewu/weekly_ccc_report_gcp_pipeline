@@ -7,7 +7,6 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     wget \
     graphviz \
-    texlive-xetex \
     perl && \
     /rocker_scripts/install_pandoc.sh && \
     install2.r rmarkdown

@@ -38,11 +38,10 @@ function(){
       stop("Report file extension is invalid. Script did not execute.")}
     
     # Render the rmarkdown file
-    rmarkdown::render(rmd_file_name, 
+    rmarkdown::render(rmd_file_name,
                       output_format = output_format,
-                      output_file = report_fid, 
-                      clean = TRUE)
-    
+                      output_file = report_fid)
+
     # Authenticate with Google Storage and write report file to bucket
     scope <- c("https://www.googleapis.com/auth/cloud-platform")
     token <- token_fetch(scopes=scope)
@@ -51,7 +50,7 @@ function(){
     
     # Loop through CSV files and write them to GCP Cloud Storage
     filelist = list.files(pattern="*.csv$")
-    lapply(filelist, function(x) gcs_upload(x, name = x))
+    lapply(filelist, function(x) gcs_upload(x, bucket=bucket, name = x))
 
     #TODO write report_fid to Box using boxr::box_auth_service()
     
