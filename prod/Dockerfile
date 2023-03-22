@@ -2,7 +2,13 @@
 
 FROM rocker/tidyverse:latest
 
+# Set the correct path for xelatex
+# Note: PATH=$PATH:/root/bin
+ENV PATH="$PATH:/root/bin"
+# Message daniel on gitter when this doesn't work
+
 # Install tinytex linux dependencies, pandoc, and rmarkdown
+# Reference: https://github.com/csdaw/rmarkdown-tinytex/blob/master/Dockerfile
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     wget \
