@@ -3,7 +3,6 @@
 FROM rocker/tidyverse:latest
 
 # Set the correct path for xelatex
-# Note: PATH=$PATH:/root/bin
 ENV PATH="$PATH:/root/bin"
 # Message daniel on gitter when this doesn't work
 
@@ -12,7 +11,7 @@ ENV PATH="$PATH:/root/bin"
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     wget \
-    graphviz \
+    graphviz \ 
     perl && \
     /rocker_scripts/install_pandoc.sh && \
     install2.r rmarkdown
@@ -25,10 +24,10 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
                epiDisplay lubridate tidyverse knitr gtsummary tidyr \
                googleCloudStorageR data.table reshape listr ggplot2 \
                RColorBrewer stringr plyr janitor expss magrittr arsenal rio \
-               RCurl finalfit sqldf gmodels patchwork ggpubr 
+               RCurl finalfit sqldf gmodels patchwork ggpubr kableExtra
 
 # These libraries might not be available from install2.R so use CRAN
-RUN R -e "install.packages(c('gt', 'kableExtra','vtable', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+RUN R -e "install.packages(c('gt', 'vtable', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 # Copy R code to directory in instance
 COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
