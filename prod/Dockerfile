@@ -14,7 +14,7 @@ RUN apt-get update \
     graphviz \ 
     perl && \
     /rocker_scripts/install_pandoc.sh && \
-    install2.r rmarkdown
+    install2.r rmarkdown kableExtra
 
 # Install tinytex
 RUN Rscript -e 'tinytex::install_tinytex()'
@@ -24,7 +24,7 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
                epiDisplay lubridate tidyverse knitr gtsummary tidyr \
                googleCloudStorageR data.table reshape listr ggplot2 \
                RColorBrewer stringr plyr janitor expss magrittr arsenal rio \
-               RCurl finalfit sqldf gmodels patchwork ggpubr kableExtra
+               RCurl finalfit sqldf gmodels patchwork ggpubr 
 
 # These libraries might not be available from install2.R so use CRAN
 RUN R -e "install.packages(c('gt', 'vtable', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
