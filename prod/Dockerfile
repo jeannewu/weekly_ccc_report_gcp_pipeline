@@ -14,10 +14,11 @@ RUN apt-get update \
     graphviz \ 
     perl && \
     /rocker_scripts/install_pandoc.sh && \
-    install2.r rmarkdown kableExtra
+    install2.r rmarkdown 
 
 # Install tinytex
-RUN Rscript -e 'tinytex::install_tinytex()'
+# RUN Rscript -e 'tinytex::install_tinytex()'
+RUN Rscript -e 'tinytex::reinstall_tinytex(repository = "illinois")'
 
 # Install R libraries
 RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
@@ -28,6 +29,16 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
 
 # These libraries might not be available from install2.R so use CRAN
 RUN R -e "install.packages(c('gt', 'vtable', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+
+# When I try to use kable extra with a normal installation from CRAN or install2.r
+# I get the error:
+# Error: package or namespace load failed for 'kableExtra':
+# .onLoad failed in loadNamespace() for 'kableExtra', details:
+#  call: !is.null(rmarkdown::metadata$output) && rmarkdown::metadata$output %in% 
+#  error: 'length = 2' in coercion to 'logical(1)'
+# The solution is to install a patched version from github
+# https://github.com/haozhu233/kableExtra/issues/750
+RUN R -e "devtools::install_github('kupietz/kableExtra')"
 
 # Copy R code to directory in instance
 COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]

@@ -21,12 +21,13 @@ function(){return("alive")}
 function(){
     
     # Define parameters 
-    rmd_file_name    <- "ccc_weekly_metrics.Rmd"
+    rmd_file_name    <- "Consolidated_weekly_Report_03152023.Rmd" #"ccc_weekly_metrics.Rmd"
     report_file_name <- "ccc_weekly_metrics.pdf"
     bucket           <- "gs://analytics_team_reports"
     
     # Add time stamp to report name
-    report_fid <- paste0(file_path_sans_ext(report_file_name), 
+    report_fid <- paste0(file_path_sans_ext(report_file_name),
+                         "_export2box_", # files with this tag will be exported from Cloud Storage Bucket to Box
                          format(Sys.time(), "_%m_%d_%Y"),
                          ".", file_ext(report_file_name))
     
@@ -51,8 +52,6 @@ function(){
     # Loop through CSV files and write them to GCP Cloud Storage
     filelist = list.files(pattern="*.csv$")
     lapply(filelist, function(x) gcs_upload(x, bucket=bucket, name = x))
-
-    #TODO write report_fid to Box using boxr::box_auth_service()
     
     # Return a string for for API testing purposes
     ret_str <- paste("All done. Check", bucket, "for", report_fid)
