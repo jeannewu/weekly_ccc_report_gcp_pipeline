@@ -65,7 +65,7 @@ library(janitor) #to get the summary sum
 library(finalfit) #https://cran.r-project.org/web/packages/finalfit/vignettes/export.html t
 library(expss) ###to add labels
 library(epiDisplay) ##recommended applied here crosstable, tab1
-library(summarytools) ##recommended
+#library(summarytools) ##recommended
 library(gmodels) ##recommended
 library(magrittr)
 library(arsenal)
