@@ -25,7 +25,7 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
                epiDisplay lubridate tidyverse knitr gtsummary tidyr \
                googleCloudStorageR data.table reshape listr ggplot2 \
                RColorBrewer stringr plyr janitor expss magrittr arsenal rio \
-               RCurl finalfit sqldf gmodels patchwork ggpubr 
+               RCurl finalfit sqldf gmodels patchwork ggpubr summarytools
 
 # These libraries might not be available from install2.R so use CRAN
 RUN R -e "install.packages(c('gt', 'vtable', 'pdftools'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
