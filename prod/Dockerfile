@@ -18,7 +18,7 @@ RUN apt-get update \
 
 # Install tinytex
 # RUN Rscript -e 'tinytex::install_tinytex()'
-RUN Rscript -e 'tinytex::reinstall_tinytex(repository = "illinois")'
+RUN Rscript -e 'tinytex::install_tinytex(repository = "illinois")'
 
 # Install R libraries
 RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
@@ -42,7 +42,7 @@ RUN R -e "devtools::install_github('kupietz/kableExtra')"
 
 # Copy R code to directory in instance
 COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
-COPY ["./ccc_weekly_metrics.Rmd", "./ccc_weekly_metrics.Rmd"]
+COPY ["./consolidated_weekly_report.Rmd", "./consolidated_weekly_report.Rmd"]
 
 # Run R code
 ENTRYPOINT ["R", "-e","pr <- plumber::plumb('ccc_weekly_metrics_api.R'); pr$run(host='0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]

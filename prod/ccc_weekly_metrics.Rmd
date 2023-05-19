@@ -340,7 +340,7 @@ for(site in unique(data[which(data$d_827220437>0),]$site)){
   notverif <- length(subs[which(subs$d_821247024 ==219863910),]$d_821247024)
   tmp <- as.data.frame(t(c(site,Total,notverif)))
   colnames(tmp) <- c("Site","Total UP Submitted","Cannot.Be.Verified")
-  verinot_site <- rbind(verinot_site,tmp)
+  verinot_site <- rbind(verinot_site,tmp, fill=TRUE)
 } 
 
 
@@ -726,7 +726,7 @@ for(site in unique(data[which(data$d_827220437>0),]$site)){
   tb_cr$Site <- droplevels(unique(subs$site))
   verified.tb <-as.data.frame(tb_cr[which(rownames(tb_cr)==353358909),])
   verified.tb$Total <- Total
-  campaign.site <- rbind(campaign.site,verified.tb)
+  campaign.site <- rbind(campaign.site,verified.tb, fill=TRUE)
   
 }
   total.veri_pct <- pct_tb(data[which(data$d_512820379==486306141),]$active_camptype,     data[which(data$d_512820379==486306141),]$Rcrt_Verified_v1r0)
@@ -735,7 +735,7 @@ for(site in unique(data[which(data$d_827220437>0),]$site)){
        colnames(act.veri.camp)[9:16] <- paste0(rownames(total.veri_pct)[1:8],"_perc")
        act.veri.camp$Site <- "Total Active Recruits"
        act.veri.camp$Total <- sum(total.veri_pct$n_104430631,total.veri_pct$n_353358909)/2
-       campaign.combo <- rbind(campaign.site,act.veri.camp)
+       campaign.combo <- rbind(campaign.site,act.veri.camp,fill=TRUE)
 
 new_order <- sort(colnames(campaign.combo))
 campaign.combo <- campaign.combo[,new_order]
@@ -791,7 +791,7 @@ table10_Tm_recr_sign.total <- recruit_timing %>% filter(d_512820379 == 486306141
             max = max(time))
 
 table10_Tm_recr_sign.total$site <- "Total"
-table10_Tm_recr_sign <- rbind(table10_Tm_recr_sign1,table10_Tm_recr_sign.total)
+table10_Tm_recr_sign <- rbind(table10_Tm_recr_sign1,table10_Tm_recr_sign.total, fill=TRUE)
 colnames(table10_Tm_recr_sign)[2] <- "Total Active Sign-In"
 table10_Tm_recr_sign$`Recruitment Type` <- "Active"
 table10_Tm_recr_sign <- table10_Tm_recr_sign %>% dplyr::rename(Site=site)
@@ -843,7 +843,7 @@ table11_Tm_signin_cst.act <- recruit_timing %>% filter(d_512820379 == 486306141 
                    max = max(time))
 
 
-table11_Tm_signin_cst.act <- rbind(table11_Tm_signin_cst.act,table11_Tm_signin_cst[which(table11_Tm_signin_cst$recruitment_type=="Active"),c(2:10)])
+table11_Tm_signin_cst.act <- rbind(table11_Tm_signin_cst.act,table11_Tm_signin_cst[which(table11_Tm_signin_cst$recruitment_type=="Active"),c(2:10)], fill=TRUE)
 table11_Tm_signin_cst.act$order <- rownames(table11_Tm_signin_cst.act)
 
 table11_Tm_signin_cst.act1 <- merge(signin_cst_type[which(signin_cst_type$x==486306141),], table11_Tm_signin_cst.act, by.x="y",by.y="site",all.y=TRUE)
