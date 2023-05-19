@@ -3,7 +3,7 @@
 FROM rocker/tidyverse:latest
 
 # Set the correct path for xelatex
-ENV PATH="$PATH:/root/bin"
+ENV PATH="$PATH:/root/bin:/usr/local/lib"
 # Message daniel on gitter when this doesn't work
 
 # Install tinytex linux dependencies, pandoc, and rmarkdown
@@ -12,6 +12,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     wget \
     graphviz \ 
+    imagemagick \
     perl && \
     /rocker_scripts/install_pandoc.sh && \
     install2.r rmarkdown 
@@ -26,7 +27,7 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
                googleCloudStorageR data.table reshape listr ggplot2 \
                RColorBrewer stringr plyr janitor expss magrittr arsenal rio \
                RCurl finalfit sqldf gmodels patchwork ggpubr summarytools \
-               lubridate jsonlite hms 
+               lubridate jsonlite hms magick
               
 
 # These libraries might not be available from install2.R so use CRAN
