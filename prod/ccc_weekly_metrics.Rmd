@@ -119,32 +119,32 @@ nvar
    start = seq(1,length(recrvar_d$column_name),nvar)
    end <- length(recrvar_d$column_name)
 
-   # recrbq <- list()
-   # 
-   # for (i in (1:length(start)))  {
-   #   select <- paste(recrvar_d$column_name[start[i]:(min(start[i]+nvar-1,end))],collapse=",")
-   #   tmp <- eval(parse(text=paste("bq_project_query(project, query=\"SELECT token,Connect_ID,", select,"FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect.participants_JP` Where d_512820379 != '180583933' or d_821247024='197316935' \")",sep=" ")))
-   # 
-   #   recrbq[[i]] <- bq_table_download(tmp, bigint="integer64",max_results = Inf, page_size = 10)
-   # }
-   # 
-   #  recr_noinact_wl <- recrbq %>% reduce(inner_join, by = c("token","Connect_ID"))
+   recrbq <- list()
+
+   for (i in (1:length(start)))  {
+     select <- paste(recrvar_d$column_name[start[i]:(min(start[i]+nvar-1,end))],collapse=",")
+     tmp <- eval(parse(text=paste("bq_project_query(project, query=\"SELECT token,Connect_ID,", select,"FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect.participants_JP` Where d_512820379 != '180583933' or d_821247024='197316935' \")",sep=" ")))
+
+     recrbq[[i]] <- bq_table_download(tmp, bigint="integer64",max_results = Inf, page_size = 10)
+   }
+
+    recr_noinact_wl <- recrbq %>% reduce(inner_join, by = c("token","Connect_ID"))
 
  # Check that it doesn't match any non-number
   numbers_only <- function(x) !grepl("\\D", x)
 
  ###convert the numeric
-   # recr_noinact_wl1 <- recr_noinact_wl
-   # cnames <- names(recr_noinact_wl)
+   recr_noinact_wl1 <- recr_noinact_wl
+   cnames <- names(recr_noinact_wl)
 #  to check variables in recr_noinact_wl1
-  # for (i in 1: length(cnames)){
-  #    varname <- cnames[i]
-  #    var<-pull(recr_noinact_wl1,varname)
-  #    recr_noinact_wl1[,cnames[i]] <- ifelse(numbers_only(var), as.numeric(as.character(var)), var)
-  #  }
-  # 
+  for (i in 1: length(cnames)){
+     varname <- cnames[i]
+     var<-pull(recr_noinact_wl1,varname)
+     recr_noinact_wl1[,cnames[i]] <- ifelse(numbers_only(var), as.numeric(as.character(var)), var)
+   }
+
   #   saveRDS(recr_noinact_wl1,paste("~/Documents/CONNECT_projects/Biospecimen_Feb2022/Jing_projects/biospecQC_03082022/data/recruit",currentDate,".rds", sep=""))
-  recr_noinact_wl1 <- readRDS("~/Documents/CONNECT_projects/Biospecimen_Feb2022/Jing_projects/biospecQC_03082022/data/recruit2023-05-22.rds" )
+ # recr_noinact_wl1 <- readRDS("~/Documents/CONNECT_projects/Biospecimen_Feb2022/Jing_projects/biospecQC_03082022/data/recruit2023-05-22.rds" )
 
 data <- recr_noinact_wl1[which(recr_noinact_wl1$d_512820379 != 180583933 | recr_noinact_wl1$d_821247024 == 197316935),] #0 removeal
 
