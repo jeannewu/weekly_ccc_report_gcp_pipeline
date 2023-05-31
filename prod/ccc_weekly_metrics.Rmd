@@ -98,7 +98,8 @@ y <- read.csv(urlfile)
 #Press Esc/Ctrl + C to cancel.
 
   1 #: wuj12@nih.gov
-  
+
+print("Authentification to BQ Complete!")
 project <- "nih-nci-dceg-connect-prod-6d04"
 billing <- "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
 
@@ -124,9 +125,10 @@ nvar
    for (i in (1:length(start)))  {
      select <- paste(recrvar_d$column_name[start[i]:(min(start[i]+nvar-1,end))],collapse=",")
      tmp <- eval(parse(text=paste("bq_project_query(project, query=\"SELECT token,Connect_ID,", select,"FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect.participants_JP` Where d_512820379 != '180583933' or d_821247024='197316935' \")",sep=" ")))
-
+     print(paste0("Downloading chunk ", i, " of ", length(start), " from BQ participants table."))
      recrbq[[i]] <- bq_table_download(tmp, bigint="integer64",max_results = Inf, page_size = 12)
    }
+   print("BQ participants table download complete!!")
 
     recr_noinact_wl <- recrbq %>% reduce(inner_join, by = c("token","Connect_ID"))
 
