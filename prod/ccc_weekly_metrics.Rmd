@@ -99,8 +99,8 @@ y <- read.csv(urlfile)
 
   1 #: wuj12@nih.gov
   
-  project <- "nih-nci-dceg-connect-prod-6d04"
-  billing <- "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
+project <- "nih-nci-dceg-connect-prod-6d04"
+billing <- "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
 
 recr_var <- bq_project_query(project, query="SELECT * FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect`.INFORMATION_SCHEMA.COLUMN_FIELD_PATHS WHERE table_name='participants_JP'")
 recrvar <- bigrquery::bq_table_download(recr_var,bigint = "integer64")
@@ -125,7 +125,7 @@ nvar
      select <- paste(recrvar_d$column_name[start[i]:(min(start[i]+nvar-1,end))],collapse=",")
      tmp <- eval(parse(text=paste("bq_project_query(project, query=\"SELECT token,Connect_ID,", select,"FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect.participants_JP` Where d_512820379 != '180583933' or d_821247024='197316935' \")",sep=" ")))
 
-     recrbq[[i]] <- bq_table_download(tmp, bigint="integer64",max_results = Inf, page_size = 10)
+     recrbq[[i]] <- bq_table_download(tmp, bigint="integer64",max_results = Inf, page_size = 12)
    }
 
     recr_noinact_wl <- recrbq %>% reduce(inner_join, by = c("token","Connect_ID"))
