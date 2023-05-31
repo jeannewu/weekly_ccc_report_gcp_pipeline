@@ -44,8 +44,8 @@ RUN R -e "install.packages(c('gt', 'vtable', 'pdftools'), dependencies=TRUE, rep
 RUN R -e "devtools::install_github('kupietz/kableExtra')"
 
 # Copy R code to directory in instance
-COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
-# COPY ["./consolidated_weekly_report.Rmd", "./consolidated_weekly_report.Rmd"]
+# COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
+COPY ["./consolidated_weekly_report.Rmd", "./consolidated_weekly_report.Rmd"]
 COPY ["./ccc_weekly_metrics.Rmd", "./ccc_weekly_metrics.Rmd"]
 
 # Run R code
