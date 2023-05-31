@@ -26,8 +26,8 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
                epiDisplay lubridate tidyverse knitr gtsummary tidyr \
                googleCloudStorageR data.table reshape listr ggplot2 \
                RColorBrewer stringr plyr janitor expss magrittr arsenal rio \
-               RCurl finalfit sqldf gmodels patchwork ggpubr summarytools \
-               lubridate jsonlite hms magick
+               RCurl finalfit sqldf gmodels patchwork ggpubr \
+               lubridate jsonlite hms magick 
               
 
 # These libraries might not be available from install2.R so use CRAN
