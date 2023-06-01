@@ -74,6 +74,9 @@ library(kableExtra)
 #library(patchwork)
 library(rio)
 library(jsonlite)
+```
+
+```{r, include=FALSE,eval=TRUE,echo=TRUE}
 options(knitr.table.format = "latex")
 currentDate <- Sys.Date()
 
@@ -98,10 +101,9 @@ y <- read.csv(urlfile)
 #Press Esc/Ctrl + C to cancel.
 
   1 #: wuj12@nih.gov
-
-print("Authentification to BQ Complete!")
-project <- "nih-nci-dceg-connect-prod-6d04"
-billing <- "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
+  
+  project <- "nih-nci-dceg-connect-prod-6d04"
+  billing <- "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
 
 recr_var <- bq_project_query(project, query="SELECT * FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect`.INFORMATION_SCHEMA.COLUMN_FIELD_PATHS WHERE table_name='participants_JP'")
 recrvar <- bigrquery::bq_table_download(recr_var,bigint = "integer64")
@@ -125,12 +127,15 @@ nvar
    for (i in (1:length(start)))  {
      select <- paste(recrvar_d$column_name[start[i]:(min(start[i]+nvar-1,end))],collapse=",")
      tmp <- eval(parse(text=paste("bq_project_query(project, query=\"SELECT token,Connect_ID,", select,"FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect.participants_JP` Where d_512820379 != '180583933' or d_821247024='197316935' \")",sep=" ")))
-     print(paste0("Downloading chunk ", i, " of ", length(start), " from BQ participants table."))
+
      recrbq[[i]] <- bq_table_download(tmp, bigint="integer64",max_results = Inf, page_size = 12)
    }
-   print("BQ participants table download complete!!")
 
     recr_noinact_wl <- recrbq %>% reduce(inner_join, by = c("token","Connect_ID"))
+    print("Recruitment data has been successfully downloaded")
+```
+
+```{r, include=FALSE,eval=TRUE,echo=FALSE}
 
  # Check that it doesn't match any non-number
   numbers_only <- function(x) !grepl("\\D", x)
