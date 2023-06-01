@@ -46,7 +46,7 @@ RUN R -e "devtools::install_github('kupietz/kableExtra')"
 # Copy R code to directory in instance
 COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
 COPY ["./consolidated_weekly_report.Rmd", "./consolidated_weekly_report.Rmd"]
-# COPY ["./ccc_weekly_metrics.Rmd", "./ccc_weekly_metrics.Rmd"]
+COPY ["./ccc_weekly_metrics.Rmd", "./ccc_weekly_metrics.Rmd"]
 
 # Run R code
 ENTRYPOINT ["R", "-e","pr <- plumber::plumb('ccc_weekly_metrics_api.R'); pr$run(host='0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]
