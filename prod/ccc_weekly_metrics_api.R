@@ -21,7 +21,8 @@ function(){return("alive")}
 function(){
     
     # Define parameters 
-    rmd_file_name    <- "consolidated_weekly_report.Rmd"
+    #rmd_file_name    <- "consolidated_weekly_report.Rmd"
+    rmd_file_name    <- "ccc_weekly_metrics.Rmd"
     report_file_name <- "consolidated_weekly_report.pdf"
     bucket           <- "gs://analytics_team_reports"
     
