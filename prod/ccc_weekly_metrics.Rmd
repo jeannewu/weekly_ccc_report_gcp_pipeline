@@ -95,12 +95,12 @@ length(unique(dd$CID))
 urlfile<- "https://raw.githubusercontent.com/episphere/conceptGithubActions/master/csv/masterFile.csv" ###to grab the updated dd from github
 y <- read.csv(urlfile)
 #dd$labels.combo <- paste(dd$`Variable Label`,dd$`Variable Name`,sep="$")
- bq_auth()
+bq_auth()
 #The bigrquery package is requesting access to your Google account.
 #Select a pre-authorised account or enter '0' to obtain a new token.
 #Press Esc/Ctrl + C to cancel.
 
-  1 #: wuj12@nih.gov
+  #1 #: wuj12@nih.gov
   
   project <- "nih-nci-dceg-connect-prod-6d04"
   billing <- "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
