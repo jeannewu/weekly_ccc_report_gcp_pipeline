@@ -65,6 +65,26 @@ bq_download_retry <- function(.bq_table,
 }
 
 download_recruitment_data_from_bq <- function() {
+  require(bigrquery)
+  
+  currentDate <- Sys.Date()
+  
+  #dictionary <- rio::import("https://github.com/episphere/conceptGithubActions/blob/master/aggregate.json",format = "json")
+  dictionary <- rio::import("https://episphere.github.io/conceptGithubActions/aggregate.json",format = "json")
+  dd <- dplyr::bind_rows(dictionary,.id="CID")
+  #dd <- dd[!duplicated(dd),] #remove 140duplicates
+  #THIS TABLE HAS REPLICATED (CIDS+LABELS) WITH DIFFERENT VARIABLE NAMES,
+  dd$`Variable Label` <- ifelse(is.na(dd$`Variable Label`), dd$`Variable Name`, dd$`Variable Label`)
+  #dd <- as.data.frame.matrix(do.call("rbind",dictionary)) #3523, some CID and labels are linked to different variable names 
+  
+  #dd1 <- dd[!duplicated(dd[,c("CID","Variable Label")]),]
+  length(unique(dd$CID))
+  
+  #the master dd with more info. on the formats (levels)
+  urlfile<- "https://raw.githubusercontent.com/episphere/conceptGithubActions/master/csv/masterFile.csv" ###to grab the updated dd from github
+  y <- read.csv(urlfile)
+  #dd$labels.combo <- paste(dd$`Variable Label`,dd$`Variable Name`,sep="$")
+  
   project <- "nih-nci-dceg-connect-prod-6d04"
   billing <-
     "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
