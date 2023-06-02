@@ -26,6 +26,11 @@ function(){
     report_file_name <- "consolidated_weekly_report.pdf"
     bucket           <- "gs://analytics_team_reports"
     
+    # Authenticate to BigQuery
+    print("Authenticating to BigQuery...")
+    bigrquery::bq_auth()
+    print("...authentication to BigQuery successful!")
+    
     # Add time stamp to report name
     report_fid <- paste0(file_path_sans_ext(report_file_name),
                          "_export2box_", # files with this tag will be exported from Cloud Storage Bucket to Box
