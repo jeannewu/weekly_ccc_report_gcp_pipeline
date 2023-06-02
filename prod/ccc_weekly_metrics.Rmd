@@ -74,6 +74,71 @@ library(kableExtra)
 #library(patchwork)
 library(rio)
 library(jsonlite)
+
+#' Wrapper around bq_table_download
+#'
+#' @description
+#' This function downloads a bq_table and reduces the automatically chosen page
+#' size if the download fails.
+#'
+#' @param .bq_table A bq_table object as provided by bq_project_query
+#' @param .page_size Integer: Page size argument for downloading data
+#' @param .quiet Flag if function should send messages. FALSE necessary for
+#' reducing page_size
+#' @param .tries Integer: Amount of times the tryCatch should reduce page_size
+#'
+#' @return
+#' A `tibble` object containing the requested data from BigQuery
+
+bq_download_retry <- function(.bq_table,
+                              .page_size,
+                              .bigint="integer64",
+                              .quiet = FALSE,
+                              .tries = 4) {
+  results <- NULL
+  try <- 1
+  
+  while(is.null(results) & try < .tries) {
+    tryCatch(
+      {
+        logs <- ""
+        # WithCallingHandlers can manage Errors/Messages displayed by code. Is used
+        # here to capturing the messages displayed by the function
+        withCallingHandlers(
+          {
+            try <- try + 1
+            results <- bigrquery::bq_table_download(
+              x         = .bq_table,
+              bigint    = .bigint,
+              page_size = .page_size,
+              quiet     = .quiet
+            )
+          },
+          message = function(msg) {
+            # <<- (Super assignment operator) used as logs need to be used in different
+            # environment
+            logs <<- paste(logs, msg)
+          }
+        )
+      },
+      error = function(err) {
+        .page_size <<- stringr::str_extract(
+          stringr::str_flatten(logs),
+          "(?<=\\(up\\sto\\)\\s)\\d+[:punct:]?\\d+"
+        ) %>%
+          stringr::str_replace("[:punct:]", "") %>%
+          as.integer() %>%
+          "*"(0.5) %>%
+          round()
+        
+        message("Download failed: Page size will be reduced! \n", err)
+        message("Start try ", try, ". Page size set to ", .page_size, ".")
+      }
+    )
+  }
+
+  return(results)
+}
 ```
 
 ```{r, include=FALSE,eval=TRUE,echo=TRUE}
@@ -128,7 +193,9 @@ nvar
      select <- paste(recrvar_d$column_name[start[i]:(min(start[i]+nvar-1,end))],collapse=",")
      tmp <- eval(parse(text=paste("bq_project_query(project, query=\"SELECT token,Connect_ID,", select,"FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect.participants_JP` Where d_512820379 != '180583933' or d_821247024='197316935' \")",sep=" ")))
 
-     recrbq[[i]] <- bq_table_download(tmp, bigint="integer64")
+     # recrbq[[i]] <- bq_table_download(tmp, bigint="integer64")
+     page_size <- 12
+     recrbq[[i]] <- bq_download_retry(tmp, page_size, .bigint="integer64")
    }
 
     recr_noinact_wl <- recrbq %>% reduce(inner_join, by = c("token","Connect_ID"))
