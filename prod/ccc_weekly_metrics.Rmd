@@ -160,13 +160,14 @@ length(unique(dd$CID))
 urlfile<- "https://raw.githubusercontent.com/episphere/conceptGithubActions/master/csv/masterFile.csv" ###to grab the updated dd from github
 y <- read.csv(urlfile)
 #dd$labels.combo <- paste(dd$`Variable Label`,dd$`Variable Name`,sep="$")
+print("Attempting to authenticate to BQ")
 bq_auth()
 #The bigrquery package is requesting access to your Google account.
 #Select a pre-authorised account or enter '0' to obtain a new token.
 #Press Esc/Ctrl + C to cancel.
 
 1 #: wuj12@nih.gov
-  
+print("Successfully authenticated to BQ")  
   project <- "nih-nci-dceg-connect-prod-6d04"
   billing <- "nih-nci-dceg-connect-prod-6d04" ##project and billing should be consistent
 
@@ -194,6 +195,7 @@ nvar
      tmp <- eval(parse(text=paste("bq_project_query(project, query=\"SELECT token,Connect_ID,", select,"FROM  `nih-nci-dceg-connect-prod-6d04.FlatConnect.participants_JP` Where d_512820379 != '180583933' or d_821247024='197316935' \")",sep=" ")))
 
      # recrbq[[i]] <- bq_table_download(tmp, bigint="integer64")
+     print(paste0("Downloading column group ",i," of ",length(start)))
      page_size <- 12
      recrbq[[i]] <- bq_download_retry(tmp, page_size, .bigint="integer64")
    }
