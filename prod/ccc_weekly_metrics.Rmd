@@ -74,7 +74,6 @@ library(kableExtra)
 #library(patchwork)
 library(rio)
 library(jsonlite)
-
 ```
 
 ```{r, include=FALSE,eval=TRUE,echo=TRUE}
@@ -98,7 +97,7 @@ y <- read.csv(urlfile)
 #dd$labels.combo <- paste(dd$`Variable Label`,dd$`Variable Name`,sep="$")
 
 # Read data from file
-recr_noinact_wl <- readRDS("data.RDS")
+recr_noinact_wl <- df
 ```
 
 ```{r, include=FALSE,eval=TRUE,echo=FALSE}

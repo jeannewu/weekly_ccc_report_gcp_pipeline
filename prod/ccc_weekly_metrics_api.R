@@ -31,6 +31,14 @@ function(){
     bigrquery::bq_auth()
     print("...authentication to BigQuery successful!")
     
+    # Download data
+    source("download_recruitment_data_from_bq.R")
+    print("Beginning download from BQ...")
+    df <- download_recruitment_data_from_bq()
+    print("Recruitment data has been successfully downloaded")
+    my_env <- new.env()
+    my_env$df <- df
+    
     # Add time stamp to report name
     report_fid <- paste0(file_path_sans_ext(report_file_name),
                          "_export2box_", # files with this tag will be exported from Cloud Storage Bucket to Box
@@ -47,7 +55,8 @@ function(){
     # Render the rmarkdown file
     rmarkdown::render(rmd_file_name,
                       output_format = output_format,
-                      output_file = report_fid)
+                      output_file = report_fid,
+                      envir = my_env)
 
     # Authenticate with Google Storage and write report file to bucket
     scope <- c("https://www.googleapis.com/auth/cloud-platform")
