@@ -66,7 +66,7 @@ bq_download_retry <- function(.bq_table,
 
 download_recruitment_data_from_bq <- function() {
   require(bigrquery)
-  
+  bigrquery::bq_auth()
   currentDate <- Sys.Date()
   
   #dictionary <- rio::import("https://github.com/episphere/conceptGithubActions/blob/master/aggregate.json",format = "json")
@@ -110,7 +110,7 @@ download_recruitment_data_from_bq <- function() {
   recrvar_pii <-
     recrvar$column_name[which(recrvar$last.CID %in% pii_cid)]
   
-  nvar = floor((length(recrvar_d$column_name)) / 8) ##to define the number of variables in each sql extract from GCP
+  nvar = floor((length(recrvar_d$column_name)) / 10) ##to define the number of variables in each sql extract from GCP
   nvar
   
   # Start column for each split data frame
