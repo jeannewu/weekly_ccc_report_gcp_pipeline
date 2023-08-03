@@ -1,1 +1,9 @@
 data.RDS
+Consolidated_Weekly_Report_4Pipeline_BQupdated_06082023.Rmd
+prod/.DS_store
+stg/.DS_store
+weekly_ccc_report_gcp_pipeline.Rproj
+stg/ccc_weekly_metrics_files/
+prod/ccc_weekly_metrics_files/
+*.csv
+*.pdf
