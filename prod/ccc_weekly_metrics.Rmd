@@ -31,6 +31,11 @@ All variables are stored as CIDs which can be found in the master dictionary: â€
 
 This report contains data as of `r format(Sys.Date(), '%d %B, %Y')`. Atypical records under investigation are not included in the metrics tables and may result in Total columns that do not add up to 100%
 
+
+```{r}
+x=1;y=2;z=x+y;z
+```
+
 ```{r setup, include=FALSE,eval=TRUE,echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 

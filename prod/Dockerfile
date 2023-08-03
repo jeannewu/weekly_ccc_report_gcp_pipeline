@@ -27,7 +27,7 @@ RUN install2.r --error plumber gridExtra scales boxr bigrquery dplyr \
                googleCloudStorageR data.table reshape listr ggplot2 \
                RColorBrewer stringr plyr janitor expss magrittr arsenal rio \
                RCurl finalfit sqldf gmodels patchwork ggpubr \
-               lubridate jsonlite hms magick 
+               lubridate jsonlite hms magick DBI ggrepel 
               
 
 # These libraries might not be available from install2.R so use CRAN
@@ -45,8 +45,9 @@ RUN R -e "devtools::install_github('kupietz/kableExtra')"
 
 # Copy R code to directory in instance
 COPY ["./ccc_weekly_metrics_api.R", "./ccc_weekly_metrics_api.R"]
-COPY ["./consolidated_weekly_report.Rmd", "./consolidated_weekly_report.Rmd"]
-COPY ["./ccc_weekly_metrics.Rmd", "./ccc_weekly_metrics.Rmd"]
+COPY ["./Consolidated_Weekly_Report_4Pipeline_BQupdated_06082023.Rmd", "./Consolidated_Weekly_Report_4Pipeline_BQupdated_06082023.Rmd"]
+#COPY ["./consolidated_weekly_report.Rmd", "./consolidated_weekly_report.Rmd"]
+#COPY ["./ccc_weekly_metrics.Rmd", "./ccc_weekly_metrics.Rmd"]
 COPY ["./download_recruitment_data_from_bq.R", "./download_recruitment_data_from_bq.R"]
 
 # Run R code
