@@ -18,7 +18,7 @@ output:
 
 header-includes: \usepackage[labelformat=empty]{caption}
 
-knit: (function(inputFile, encoding) {rmarkdown::render("Consolidated_Weekly_Report_4Pipeline_BQupdated_06082023.Rmd", output_file=paste("Connect_WeeklyOperationsMetrics_", Sys.Date()-1, ".pdf", sep=""))})
+knit: (function(inputFile, encoding) {rmarkdown::render("Consolidated_Weekly_Report_4Pipeline_BQupdated_06082023.Rmd", output_file=paste("Connect_WeeklyOperationsMetrics_", Sys.Date()-1,"_boxfolder141543281606", ".pdf", sep=""))})
 
 ---
 ## General Information
@@ -3238,7 +3238,7 @@ currentDate <- Sys.Date()
 outputpath <- ""
 # ##to create a data of the particpants with previous cancer history among those user profile complete
 ca_hist$date <- currentDate
-write.csv(ca_hist[,c("date","token","Connect_ID","site", "age","sex", "race","Verification status","Recruitment type","User Profile submitted","RcrtSI_TypeTime_v1r0","RcrtUP_SubmitTime_v1r0","Cancer Type","Cancer Comments","Previous Cancer","Cancer Year","RcrtV_CStatusMatch_v1r0")], paste(outputpath,"prod_previous_cancer_cases_profile_complete_",currentDate,".csv",sep=""), row.names = F,na="")
+write.csv(ca_hist[,c("date","token","Connect_ID","site", "age","sex", "race","Verification status","Recruitment type","User Profile submitted","RcrtSI_TypeTime_v1r0","RcrtUP_SubmitTime_v1r0","Cancer Type","Cancer Comments","Previous Cancer","Cancer Year","RcrtV_CStatusMatch_v1r0")], paste(outputpath,"prod_previous_cancer_cases_profile_complete_",currentDate,"_boxfolder_","191948877738",".csv",sep=""), row.names = F,na="")
 
 # box_setwd(dir_id=191948877738)
 #box_write(object = ca_hist[,c("date","token","Connect_ID","site", "age","sex", "race","Verification status","Recruitment type","User Profile submitted","RcrtSI_TypeTime_v1r0","RcrtUP_SubmitTime_v1r0","Cancer Type","Cancer Comments","Previous Cancer","Cancer Year","RcrtV_CStatusMatch_v1r0")], paste("prod_previous_cancer_cases_profile_complete_",currentDate,".csv",sep=""),row.names = F,na="")
@@ -3363,40 +3363,80 @@ currentDate <- Sys.Date()
 
 #folder <- c(141622949146,141623034772,141623623841,141622125003,141623855895,142482879711,142480938244,142481904303,142481813411)
 
-for (i in 1:length(levels(refwd.cases.notes$site))) {
-  # id=folder[i]
-  # box_setwd(dir_id = id)
-  # box_write(object =refwd.cases.notes[which(refwd.cases.notes$site == levels(refwd.cases.notes$site)[i]), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_",site,currentDate,".csv",sep=""),row.names = F,na="") #to save the box folders
+# Assuming refwd.cases.notes$site is a factor variable
+site_levels <- levels(refwd.cases.notes$site)
+
+# Create a data frame to pair dir_ids and site_strings
+dir_site_pairs <- data.frame(
+  dir_id = c(141622949146, 141623034772, 141623623841, 141622125003, 141623855895, 
+             142482879711, 142480938244, 142481904303, 142481813411),
+  site_string = c("HealthPartners", "Henry Ford Health System", 
+                  "Marshfield Clinic Health System", "Sanford Health", 
+                  "University of Chicago Medicine", "Kaiser Permanente Colorado", 
+                  "Kaiser Permanente Georgia", "Kaiser Permanente Hawaii", 
+                  "Kaiser Permanente Northwest")
+)
+
+# Choose whether to write the CSV files to Box or locally
+write_to_box <- FALSE
+
+for (i in seq_along(site_levels)) {
+  site <- site_levels[i]
   
-  write.csv(refwd.cases.notes[which(refwd.cases.notes$site == levels(refwd.cases.notes$site)[i]),which(!grepl("Date",colnames(refwd.cases.notes)))],paste(outputpath,"RefusalWithdrawl_cases_",site,currentDate,".csv",sep=""),row.names = F,na="")
+  # Extract data subset for the current site
+  data_subset <- refwd.cases.notes[which(refwd.cases.notes$site == site), 
+                                  which(!grepl("Date", colnames(refwd.cases.notes)))]
+  
+  # Generate the file name for the current site's data subset
+  file_name <- paste("RefusalWithdrawl_cases_", site, "_", currentDate, "_boxfolder", dir_site_pairs$dir_id[i], ".csv", sep="")
+  
+  if (write_to_box) {
+    # Box folder and write for each site
+    box_setwd(dir_id = dir_site_pairs$dir_id[i])
+    box_write(object = data_subset, file_name = file_name, row.names = FALSE, na="")
+  } else {
+    # Set the output file path for the CSV file (local write)
+    output_file <- paste(outputpath, file_name, sep="")
+    # Write the data subset to a CSV file locally
+    write.csv(data_subset, output_file, row.names = FALSE, na="")
+  }
 }
 
-#box_setwd(dir_id=141622949146)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "HealthPartners"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_HealthPartner_",currentDate,".csv",sep=""),row.names = F,na="")
 
-#box_setwd(dir_id=141623034772)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Henry Ford Health System"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Henry_Ford_ Health_System_",currentDate,".csv",sep=""),row.names = F,na="")
-
-#box_setwd(dir_id=141623623841)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Marshfield Clinic Health System"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Marshfield_ Clinic_Health_System_",currentDate,".csv",sep=""),row.names = F,na="")
-
-#box_setwd(dir_id=141622125003)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Sanford Health"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Sanford_ Health_",currentDate,".csv",sep=""),row.names = F,na="")
-
-#box_setwd(dir_id=141623855895)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "University of Chicago Medicine"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_University_of_ Chicago_Medicine_",currentDate,".csv",sep=""),row.names = F,na="")
-
-#box_setwd(dir_id=,142482879711)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Colorado"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Kaiser_ Permanente_Colorado_",currentDate,".csv",sep=""),row.names = F,na="")
-
-#box_setwd(dir_id=,142480938244)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Georgia"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_HealthPartner_",currentDate,".csv",sep=""),row.names = F,na="")
-
-#box_setwd(dir_id=142481904303)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Hawaii"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Kaiser _Permanente_Hawai_",currentDate,".csv",sep=""),row.names = F,na="")
-
-#box_setwd(dir_id=142481813411)
-#box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Northwest"), which(!grepl("Date",colnames(refwd.cases.notes)))], file_name=paste("RefusalWithdrawl_cases_Kaiser_ Permanente_Northwest_", currentDate, ".csv",sep=""),row.names = F,na="")
+# for (i in 1:length(levels(refwd.cases.notes$site))) {
+#   # id=folder[i]
+#   # box_setwd(dir_id = id)
+#   # box_write(object =refwd.cases.notes[which(refwd.cases.notes$site == levels(refwd.cases.notes$site)[i]), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_",site,currentDate,".csv",sep=""),row.names = F,na="") #to save the box folders
+#   
+#   write.csv(refwd.cases.notes[which(refwd.cases.notes$site == levels(refwd.cases.notes$site)[i]),which(!grepl("Date",colnames(refwd.cases.notes)))],paste(outputpath,"RefusalWithdrawl_cases_",site,currentDate,".csv",sep=""),row.names = F,na="")
+# }
+# 
+# #box_setwd(dir_id=141622949146)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "HealthPartners"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_HealthPartner_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=141623034772)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Henry Ford Health System"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Henry_Ford_ Health_System_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=141623623841)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Marshfield Clinic Health System"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Marshfield_ Clinic_Health_System_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=141622125003)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Sanford Health"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Sanford_ Health_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=141623855895)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "University of Chicago Medicine"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_University_of_ Chicago_Medicine_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=,142482879711)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Colorado"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Kaiser_ Permanente_Colorado_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=,142480938244)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Georgia"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_HealthPartner_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=142481904303)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Hawaii"), which(!grepl("Date",colnames(refwd.cases.notes)))],file_name=paste("RefusalWithdrawl_cases_Kaiser _Permanente_Hawai_",currentDate,".csv",sep=""),row.names = F,na="")
+# 
+# #box_setwd(dir_id=142481813411)
+# #box_write(object = refwd.cases.notes[which(refwd.cases.notes$site == "Kaiser Permanente Northwest"), which(!grepl("Date",colnames(refwd.cases.notes)))], file_name=paste("RefusalWithdrawl_cases_Kaiser_ Permanente_Northwest_", currentDate, ".csv",sep=""),row.names = F,na="")
 
 
 
@@ -3517,11 +3557,11 @@ incentive_nonchi <- incentive_nonchi %>% mutate(Eligible.for.Payment=case_when(d
 # 
 # box_write(object = incentive[,c("token","site","NORC.Payment.Eligibility","Eligible.for.Payment","Time.Payment.Eligible.for.Round")], file_name =paste("Incentives_Weekly_Report_NORC",currentDate,".csv",sep=""))
 
-write.csv(incentive[,c("token","site","NORC.Payment.Eligibility","Eligible.for.Payment","Time.Payment.Eligible.for.Round")],paste(outputpath,"Incentives_Weekly_Report_NORC",currentDate,".csv", sep=""),na="",row.names=F)
+write.csv(incentive[,c("token","site","NORC.Payment.Eligibility","Eligible.for.Payment","Time.Payment.Eligible.for.Round")],paste(outputpath,"Incentives_Weekly_Report_NORC",currentDate,"_boxfolder167284102961",".csv", sep=""),na="",row.names=F)
 
 # box_write(object = incentive_nonchi[,c("token","site","NORC.Payment.Eligibility","Eligible.for.Payment","Time.Payment.Eligible.for.Round")], file_name =paste("Incentives_Weekly_Report_OTHERSITES_",currentDate,".csv",sep=""))
 
-write.csv(incentive_nonchi[,c("token","site","NORC.Payment.Eligibility","Eligible.for.Payment","Time.Payment.Eligible.for.Round")],paste(outputpath,"Incentives_Weekly_Report_OTHERSITES_",currentDate,".csv", sep=""),na="",row.names=F)
+write.csv(incentive_nonchi[,c("token","site","NORC.Payment.Eligibility","Eligible.for.Payment","Time.Payment.Eligible.for.Round")],paste(outputpath,"Incentives_Weekly_Report_OTHERSITES_",currentDate,"_boxfolder167284102961",".csv", sep=""),na="",row.names=F)
 
 ```
 
@@ -3900,11 +3940,11 @@ for (v in 1:length(var.select)){
 #          client_secret = "gSKdYKLd65aQpZGrq9x4QVUNnn5C8qqm")
 # box_setwd(dir_id = 200244295811)
 # 
-# box_write(object = base[which(base$Week.Starting < as.Date(currentDate) & base$Week.Ending < as.Date(currentDate)),], file_name =paste("CCC_metrics_weekly_log_labels_",currentDate,".csv",sep=""),na="",row.names=F)
+# box_write(object = base[which(base$Week.Starting < as.Date(currentDate) & base$Week.Ending < as.Date(currentDate)),], file_name =paste("CCC_metrics_weekly_log_labels_",currentDate,".csv",sep=""), na="",row.names=F)
 
 #write.csv(base,paste("~/Documents/CONNECT_projects/Biospecimen_Feb2022/Jing_projects/biospecQC_03082022/data/CCC_metrics_weekly_log_labels_",currentDate,".csv",sep=""),na="",row.names=F)
-
-write.csv(base,paste(outputpath,"CCC_metrics_weekly_log_labels_updated_",currentDate,".csv",sep=""),na="",row.names=F)
+box_dir_id = "200244295811"
+write.csv(base,paste(outputpath,"CCC_metrics_weekly_log_labels_updated_",currentDate,"_boxFolder",box_dir_id,".csv",sep=""),na="",row.names=F)
 #write.csv(base,"~/Documents/CONNECT_projects/Biospecimen_Feb2022/Jing_projects/biospecQC_03082022/data/CCC_metrics_weekly_log_labels_03062023.csv",na.rm="",row.names=F)
 ###by site
 veri_act <- apply_labels(veri_act,d_827220437 = "Site",#RcrtES_Site_v1r0
@@ -4008,6 +4048,9 @@ recr_veri_wk.site$Week.Ending <- recr_veri_wk.site$recruit.week.date
 
 site_recruit_verified <- list()
 site <- levels(droplevels(recr_veri_wk.site$site))
+
+box_dir <- "200244295811"
+
 for(i in 1:length(site)){
   s = site[i]
   subs.recrui_verified <- filter(recr_veri_wk.site,site==s)
@@ -4084,13 +4127,13 @@ for(i in 1:length(site)){
   }
   
   #write.csv(sub.base[which(subs.recr_veri_wk$Week.Starting != currentDate),],paste("~/Documents/CONNECT_projects/Biospecimen_Feb2022/Jing_projects/biospecQC_03082022/data/CCC_metrics_weekly_log_labels_",site[i],"03202023.csv", sep=""))
-  write.csv(sub.base[which(subs.recr_veri_wk$Week.Starting != currentDate),],paste(outputpath,"CCC_metrics_weekly_log_labels_",site[i],currentDate,".csv", sep=""),na="",row.names=F)
+  write.csv(sub.base[which(subs.recr_veri_wk$Week.Starting != currentDate),],paste(outputpath,"CCC_metrics_weekly_log_labels_",site[i],currentDate,"_boxfolder",box_dir,".csv", sep=""),na="",row.names=F)
   
   # box_write(object = sub.base[which(sub.base$Week.Starting < as.Date(currentDate) & sub.base$Week.Ending < as.Date(currentDate)),], file_name =paste("CCC_metrics_weekly_log_labels_",site[i],currentDate,".csv",sep=""),na="",row.names=F)
   
   site_recruit_verified[[i]] <- subs.recr_veri_wk
   #write.csv(subs.recr_veri_wk,paste("~/Documents/CONNECT_projects/Biospecimen_Feb2022/Jing_projects/biospecQC_03082022/data/CCC_metrics_weekly_log",site[i],"03202023.csv", sep=""))
-  write.csv(subs.recr_veri_wk,paste(outputpath,"CCC_metrics_weekly_log",site[i],currentDate,".csv", sep=""),na="",row.names=F)
+  write.csv(subs.recr_veri_wk,paste(outputpath,"CCC_metrics_weekly_log",site[i],currentDate,"_boxfolder",box_dir,".csv", sep=""),na="",row.names=F)
  
 ##to get the refusal and withdrawl data
 ending.time <- Sys.time() 
