@@ -2683,8 +2683,8 @@ refwd.cases.notes <- tmp[,which(grepl("v1r0", colnames(tmp)) | colnames(tmp) %in
 #  }
  
  if (write_to_box){
-   box_auth(client_id = "627lww8un9twnoa8f9rjvldf7kb56q1m",
-            client_secret = "gSKdYKLd65aQpZGrq9x4QVUNnn5C8qqm")
+   box_auth(client_id = client_id,
+            client_secret = secret)
    box_setwd(dir_id = 141543243283) #/CONNECT_DCEG ONLY/Connect Reports_DCEG ONLY/Refusal and Withdrawal Reports_DCEG
    box_write(object = refwd.cases.notes[,which(!grepl("Date",colnames(refwd.cases.notes)))], 
              file_name = paste("RefusalWithdrawl_cases_",currentDate,".csv",sep=""),
