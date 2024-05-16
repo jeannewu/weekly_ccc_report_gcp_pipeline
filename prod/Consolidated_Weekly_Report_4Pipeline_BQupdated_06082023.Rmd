@@ -3232,8 +3232,8 @@ table61_sexall %>% kable_styling(latex_options = "scale_down")%>% footnote(gener
 
 ##to get the refusal and withdrawl data
 currentDate <- Sys.Date()
-# box_auth(client_id = "627lww8un9twnoa8f9rjvldf7kb56q1m",
-#          client_secret = "gSKdYKLd65aQpZGrq9x4QVUNnn5C8qqm")
+# box_auth(client_id = client_id,
+#          client_secret = secret)
 
 outputpath <- ""
 # ##to create a data of the particpants with previous cancer history among those user profile complete
