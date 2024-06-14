@@ -3936,8 +3936,8 @@ for (v in 1:length(var.select)){
 }
 
 ##Mar. 27, 2023, as Amelia 
-# box_auth(client_id = "627lww8un9twnoa8f9rjvldf7kb56q1m",
-#          client_secret = "gSKdYKLd65aQpZGrq9x4QVUNnn5C8qqm")
+# box_auth(client_id = client,
+#          client_secret = secret)
 # box_setwd(dir_id = 200244295811)
 # 
 # box_write(object = base[which(base$Week.Starting < as.Date(currentDate) & base$Week.Ending < as.Date(currentDate)),], file_name =paste("CCC_metrics_weekly_log_labels_",currentDate,".csv",sep=""), na="",row.names=F)
